@@ -4,6 +4,6 @@ public class Main {
         // 여기에 코드를 작성해주세요.
         Scanner sc = new Scanner(System.in);
         int a = sc.nextInt();
-        System.out.pintf("Your score is %d point", a);
+        System.out.printf("Your score is %d point", a);
     }
 }
