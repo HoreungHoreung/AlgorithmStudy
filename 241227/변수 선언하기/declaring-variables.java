@@ -4,6 +4,7 @@ public class Main {
         int a = 3;
         char b = 'C';
 
-        System.out.println(a\nb);
+        System.out.println(a);
+        System.out.println(b);
     }
 }
