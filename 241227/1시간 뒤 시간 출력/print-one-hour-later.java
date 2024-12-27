@@ -7,6 +7,6 @@ public class Main {
         String[] strArr = s.split(":");
         int a = Integer.parseInt(strArr[0]);
         int b = Integer.parseInt(strArr[1]);
-        System.out.println(strArr[0] + 1 + ":" + strArr[1]);
+        System.out.println(a + 1 + ":" + b);
     }
 }
