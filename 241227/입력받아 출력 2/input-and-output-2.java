@@ -6,7 +6,7 @@ public class Main {
         sc.useDelimiter("-");
         int a = sc.nextInt();
         int b = sc.nextInt();
-        System.out.println("a" +  "b");
+        System.out.printf("%d%d", a, b);
 
     }
 }
