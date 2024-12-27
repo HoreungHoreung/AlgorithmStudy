@@ -5,7 +5,7 @@ public class Main {
         temp = a;
         a = c;
         c = b;
-        b = temp
+        b = temp;
 
         System.out.printf("%d\n%d\n%d", a, b, c);
 
