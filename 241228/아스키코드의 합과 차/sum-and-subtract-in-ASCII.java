@@ -6,9 +6,10 @@ public class Main {
         
         char first = sc.next().charAt(0);
         char second = sc.next().charAt(0);
+        
         int a = (int) first;
         int b = (int) second;
 
-        System.out.print(a + b + " " + a - b);
+        System.out.print((a + b) + " " + (a > b ? a - b : b - a));
     }
 }
