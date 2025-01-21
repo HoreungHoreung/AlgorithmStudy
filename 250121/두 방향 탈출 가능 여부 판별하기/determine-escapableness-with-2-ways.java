@@ -40,8 +40,8 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
         grid = new int[n][m];
         visited = new int[n][m];
@@ -56,8 +56,10 @@ public class Main {
 
         DFS(0,0);
 
-        if(answer[n-1][m-1] != 0) bw.write(String.valueOf(1));
-        else bw.write(String.valueOf(0));
+        // if(answer[n-1][m-1] != 0) bw.write(String.valueOf(1));
+        // else bw.write(String.valueOf(0));
+        if(answer[n-1][m-1] == 0) bw.write(0 + "\n");
+        else bw.write(1 + "\n ");
 
         br.close();
         bw.flush();
