@@ -21,6 +21,7 @@ public class Main {
         int M = Integer.parseInt(st.nextToken());
         int[][] graph = new int[N+1][N+1];
         boolean[] visited = new boolean[N + 1];
+        visited[1] = true;
 
         int cnt = 0;
 
@@ -36,7 +37,7 @@ public class Main {
             graph[i][i] = 1;
         }
 
-        bw.write(DFS(1, graph, visited, cnt) - 1 + "\n");
+        bw.write(DFS(1, graph, visited, cnt) + "\n");
         br.close();
         bw.flush();
         bw.close();
