@@ -58,9 +58,10 @@ public class Main {
             int safeZones = 0;
             for(int i = 0; i < N; i++) {
                 for(int j = 0; j < M; j++) {
-                    if(grid[i][j] > level && visited[i][j] == 0) {
-                        DFS(i, j, level);
+                    if(canGo(i, j, level)) {
+                        visited[i][j] = 1;
                         safeZones++;
+                        DFS(i, j, level);
                     }
                 }
             }
@@ -68,8 +69,6 @@ public class Main {
             if (safeZones > maxSafe) {
                 maxSafe = safeZones;
                 safeLevel = level;
-            } else if (safeZones == maxSafe) {
-                safeLevel = Math.min(safeLevel, level); // 최소 레벨 유지
             }
         }
 
