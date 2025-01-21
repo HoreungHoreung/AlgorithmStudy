@@ -37,9 +37,6 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         StringBuilder sb = new StringBuilder();
 
-        int maxSafe = 0;
-        int safeLevel = 0;
-
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
@@ -51,6 +48,10 @@ public class Main {
                 grid[i][j] = Integer.parseInt(st.nextToken());
             }
         }
+
+        int safeLevel = 0;
+        int maxSafe = 0;
+        int[] levels = new int[101];
 
         for (int level = 1; level <= 100; level++) {
             visited = new int[N][M];
@@ -64,12 +65,18 @@ public class Main {
                 }
             }
 
-            if (safeZones > maxSafe) {
-                safeLevel = level;
-                maxSafe = safeZones;
-            }
+            levels[level] = safeZones;
+
+            maxSafe = Math.max(maxSafe, safeZones);
         }
 
+        for(int level : levels) {
+            if (level == maxSafe) {
+                safeLevel = level;
+                break;
+            }
+        }
+        
         sb.append(safeLevel).append(" ").append(maxSafe);
 
         bw.write(sb.toString());
