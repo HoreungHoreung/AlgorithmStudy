@@ -68,9 +68,10 @@ public class Main {
             if (safeZones > maxSafe) {
                 maxSafe = safeZones;
                 safeLevel = level;
+            } else if (safeZones == maxSafe) {
+                safeLevel = Math.min(safeLevel, level); // 최소 레벨 유지
             }
         }
-
 
         sb.append(safeLevel).append(" ").append(maxSafe);
 
