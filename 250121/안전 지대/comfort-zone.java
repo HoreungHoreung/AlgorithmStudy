@@ -1,12 +1,10 @@
-
-
 import java.util.*;
 import java.io.*;
 
 public class Main {
     public static int N, M;
     public static int[][] grid;
-    public static int[][] visited;
+    public static boolean[][] visited;
 
     public static boolean inRange(int x, int y) {
         return 0 <= x && x < N && 0 <= y && y < M;
@@ -14,29 +12,45 @@ public class Main {
 
     public static boolean canGo(int x, int y, int level) {
         if (!inRange(x, y)) return false;
-        if (visited[x][y] == 1 || grid[x][y] <= level) return false;
+        if (visited[x][y] || grid[x][y] <= level) return false;
         return true;
     }
 
     public static void DFS(int x, int y, int level) {
-        int[] dx = new int[]{-1, 1, 0, 0};
-        int[] dy = new int[]{0, 0, -1, 1};
+        int[] dx = {0, 0, -1, 1};
+        int[] dy = {-1, 1, 0, 0};
 
-        visited[x][y] = 1;
+        visited[x][y] = true;
 
         for (int i = 0; i < 4; i++) {
-            int newX = x + dx[i];
-            int newY = y + dy[i];
-
-            if (canGo(newX, newY, level)) DFS(newX, newY, level);
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (canGo(nx, ny, level)) {
+                DFS(nx, ny, level);
+            }
         }
+    }
+
+    public static int getSafeZones(int level) {
+        visited = new boolean[N][M];
+        int safeZones = 0;
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                if (canGo(i, j, level)) {
+                    DFS(i, j, level);
+                    safeZones++;
+                }
+            }
+        }
+
+        return safeZones;
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        StringBuilder sb = new StringBuilder();
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
@@ -44,44 +58,33 @@ public class Main {
         grid = new int[N][M];
         int maxHeight = 0;
 
-        // 입력받으면서 최대 높이 계산
+        // 입력 처리 및 최대 높이 계산
         for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
+            st = new StringTokenizer(br.readLine());
             for (int j = 0; j < M; j++) {
                 grid[i][j] = Integer.parseInt(st.nextToken());
                 maxHeight = Math.max(maxHeight, grid[i][j]);
             }
         }
 
-        int safeLevel = 0;
-        int maxSafe = 0;
+        int maxSafeZones = 0;
+        int optimalLevel = 0;
 
+        // 각 레벨에 대해 안전 영역 계산
         for (int level = 1; level <= maxHeight; level++) {
-            visited = new int[N][M];
-            int safeZones = 0;
+            int safeZones = getSafeZones(level);
 
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < M; j++) {
-                    if (canGo(i, j, level)) {
-                        visited[i][j] = 1;
-                        safeZones++;
-                        DFS(i, j, level);
-                    }
-                }
-            }
-
-            if (safeZones > maxSafe) {
-                maxSafe = safeZones;
-                safeLevel = level;
-            } else if (safeZones == maxSafe) {
-                safeLevel = Math.min(safeLevel, level); // 최소 레벨 유지
+            if (safeZones > maxSafeZones) {
+                maxSafeZones = safeZones;
+                optimalLevel = level;
+            } else if (safeZones == maxSafeZones) {
+                optimalLevel = Math.min(optimalLevel, level);
             }
         }
 
-        sb.append(safeLevel).append(" ").append(maxSafe).append("\n");
-        bw.write(sb.toString());
-        br.close();
+        bw.write(optimalLevel + " " + maxSafeZones + "\n");
         bw.flush();
+        br.close();
         bw.close();
     }
 }
