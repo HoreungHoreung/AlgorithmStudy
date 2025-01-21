@@ -1,45 +1,48 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 public class Main {
-    private static int DFS(int vertex, int[][] graph, boolean[] visited, int cnt) {
-        for(int currV = 1; currV < graph.length; currV++) {
-            if(graph[vertex][currV] == 1 && !visited[currV]) {
-                cnt++;
+    public static void main(String[] args) {
+        public static final int MAX_NUM = 1000;
+    public static int n, m;
+
+    public static ArrayList<Integer>[] graph = new ArrayList[MAX_NUM + 1];
+    public static boolean[] visited = new boolean[MAX_NUM + 1];
+    public static int vertexCnt = 0;
+
+    public static void DFS(int vertex) {
+        for(int i = 0; i < graph[vertex].size(); i++) {
+            int currV = graph[vertex].get(i);
+            if(!visited[currV]) {
+                vertexCnt ++;
                 visited[currV] = true;
-                cnt = DFS(currV, graph, visited, cnt);
+                DFS(currV);
             }
         }
-        return cnt;
     }
-    public static void main(String[] args) throws IOException{
-        // Please write your code here.
+
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
-        int[][] graph = new int[N+1][N+1];
-        boolean[] visited = new boolean[N + 1];
-        visited[1] = true;
 
-        int cnt = 0;
-
-        for(int i = 0; i < M; i++) {
+        while(M-- > 0) {
             st = new StringTokenizer(br.readLine(), " ");
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
-            graph[x][y] = 1;
-            graph[y][x] = 1;
-        }
+            int v1 = Integer.parseInt(st.nextToken());
+            int v2 = Integer.parseInt(st.nextToken());
 
-        for(int i = 0; i < N + 1; i++) {
-            graph[i][i] = 1;
+            graph[v1].add(v2);
+            graph[v2].add(v1);
         }
+        
+        visited[1] = true;
+        DFS(1);
 
-        bw.write(DFS(1, graph, visited, cnt) + "\n");
+        bw.write(vertexCnt + "\n");
         br.close();
         bw.flush();
         bw.close();
+    }
     }
 }
