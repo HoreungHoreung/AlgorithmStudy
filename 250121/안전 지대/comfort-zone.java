@@ -1,90 +1,99 @@
-import java.util.*;
-import java.io.*;
+import java.util.Scanner;
 
 public class Main {
-    public static int N, M;
-    public static int[][] grid;
-    public static boolean[][] visited;
+    public static final int DIR_NUM = 4; // 방향 개수
+    public static final int MAX_HEIGHT = 100;
+    public static final int MAX_M = 50;
+    public static final int MAX_N = 50;
 
-    public static boolean inRange(int x, int y) {
-        return 0 <= x && x < N && 0 <= y && y < M;
+    public static int N, M; // 격자 크기
+    public static int[][] grid = new int[MAX_N][MAX_M]; // 높이 정보
+    public static boolean[][] visited = new boolean[MAX_N][MAX_M]; // 방문 여부
+    public static int safeZones; // 안전 영역 개수
+
+    // visited 배열 초기화
+    public static void initializeVisited() {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                visited[i][j] = false;
+            }
+        }
     }
 
+    // 주어진 좌표가 격자 범위 내에 있는지 확인
+    public static boolean inRange(int x, int y) {
+        return x >= 0 && x < N && y >= 0 && y < M;
+    }
+
+    // 특정 위치로 이동 가능 여부 확인
     public static boolean canGo(int x, int y, int level) {
-        if (!inRange(x, y)) return false;
-        if (visited[x][y] || grid[x][y] <= level) return false;
+        if (!inRange(x, y)) 
+            return false;
+
+        if (visited[x][y] || grid[x][y] <= level)
+            return false;
+
         return true;
     }
 
+    // DFS 탐색
     public static void DFS(int x, int y, int level) {
-        int[] dx = {0, 0, -1, 1};
+        int[] dx = {0, 0, -1, 1}; // 상하좌우 방향
         int[] dy = {-1, 1, 0, 0};
 
         visited[x][y] = true;
 
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+        for (int dir = 0; dir < DIR_NUM; dir++) {
+            int nx = x + dx[dir];
+            int ny = y + dy[dir];
+
             if (canGo(nx, ny, level)) {
                 DFS(nx, ny, level);
             }
         }
     }
 
-    public static int getSafeZones(int level) {
-        visited = new boolean[N][M];
-        int safeZones = 0;
+    // 특정 레벨에서 안전 영역 개수 계산
+    public static void calculateSafeZones(int level) {
+        safeZones = 0;
+        initializeVisited();
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 if (canGo(i, j, level)) {
-                    DFS(i, j, level);
                     safeZones++;
+                    DFS(i, j, level);
                 }
             }
         }
-
-        return safeZones;
     }
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int maxSafeZones = -1;
+        int optimalLevel = 0;
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        N = sc.nextInt();
+        M = sc.nextInt();
 
-        grid = new int[N][M];
-        int maxHeight = 0;
-
-        // 입력 처리 및 최대 높이 계산
+        // 격자 높이 정보 입력
         for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
             for (int j = 0; j < M; j++) {
-                grid[i][j] = Integer.parseInt(st.nextToken());
-                maxHeight = Math.max(maxHeight, grid[i][j]);
+                grid[i][j] = sc.nextInt();
             }
         }
 
-        int maxSafeZones = 0;
-        int optimalLevel = 0;
-
-        // 각 레벨에 대해 안전 영역 계산
-        for (int level = 1; level <= maxHeight; level++) {
-            int safeZones = getSafeZones(level);
+        // 각 가능한 비의 높이에 대해 안전 영역 계산
+        for (int level = 1; level <= MAX_HEIGHT; level++) {
+            calculateSafeZones(level);
 
             if (safeZones > maxSafeZones) {
                 maxSafeZones = safeZones;
                 optimalLevel = level;
-            } else if (safeZones == maxSafeZones) {
-                optimalLevel = Math.min(optimalLevel, level);
             }
         }
 
-        bw.write(optimalLevel + " " + maxSafeZones + "\n");
-        bw.flush();
-        br.close();
-        bw.close();
+        // 결과 출력
+        System.out.println(optimalLevel + " " + maxSafeZones);
     }
 }
