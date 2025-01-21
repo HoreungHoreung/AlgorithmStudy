@@ -65,18 +65,13 @@ public class Main {
                 }
             }
 
-            levels[level] = safeZones;
-
-            maxSafe = Math.max(maxSafe, safeZones);
-        }
-
-        for(int level : levels) {
-            if (level == maxSafe) {
+            if (safeZones > maxSafe) {
+                maxSafe = safeZones;
                 safeLevel = level;
-                break;
             }
         }
-        
+
+
         sb.append(safeLevel).append(" ").append(maxSafe);
 
         bw.write(sb.toString());
