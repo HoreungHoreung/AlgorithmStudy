@@ -28,7 +28,8 @@ public class Main {
     }
 
     public static boolean canGo(int x, int y) {
-        if(!inRange(x, y) || grid[x][y] == 0) return false;
+        if(!inRange(x, y)) return false;
+        if(visited[x][y] == 1 || grid[x][y] == 0) return false;
         return true;
     }
 
@@ -52,6 +53,8 @@ public class Main {
                 grid[i][j] = Integer.parseInt(st.nextToken());
             }
         }
+
+        DFS(0,0);
 
         if(answer[n-1][m-1] != 0) bw.write(String.valueOf(1));
         else bw.write(String.valueOf(0));
