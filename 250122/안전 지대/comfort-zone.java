@@ -1,5 +1,3 @@
-
-
 import java.util.*;
 import java.io.*;
 
@@ -47,7 +45,7 @@ public class Main {
             }
         }
 
-        int safeLevel = 0;
+        int safeLevel = 1;
         int maxSafe = 0;
 
         for (int level = 1; level <= 100; level++) {
