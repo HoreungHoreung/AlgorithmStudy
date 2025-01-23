@@ -33,7 +33,7 @@ public class Main {
             
             public int compare(Student s1, Student s2) {
                 if(s1.kor != s2.kor) return s2.kor - s1.kor;
-                if(s1.eng != s2.eng) return s2.eng - s1.eng;
+                else if(s1.eng != s2.eng) return s2.eng - s1.eng;
                 else return s2.math - s1.math;
             }
         });
