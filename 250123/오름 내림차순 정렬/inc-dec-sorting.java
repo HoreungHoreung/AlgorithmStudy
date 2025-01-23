@@ -14,17 +14,18 @@ public class Main {
             int num = sc.nextInt();
             arr[i] = num;
             arr2[i] = num;
-    
         }
+
+        Integer[] arr3 = Arrays.stream(arr).boxed().toArray(Integer[]::new);
 
         Arrays.sort(arr);
         for(int i = 0; i < n; i++) {
             System.out.print(arr[i] + " ");
         }
         System.out.println();
-        Arrays.sort(arr2, Collections.reverseOrder());
+        Arrays.sort(arr3, Collections.reverseOrder());
         for(int i = 0; i < n; i++) {
-            System.out.print(arr2[i] + " ");
+            System.out.print(arr3[i] + " ");
         }
     }
 }
