@@ -2,16 +2,15 @@ import java.util.Scanner;
 public class Main {
     static void naturalOrder(int n) {
         if(n == 0) return;
-        int out = n;
-        naturalOrder(--n);
-        System.out.print(out + " ");
+        naturalOrder(n-1);
+        System.out.print(n + " ");
 
         
     }
     static void reverseOrder(int n) {
         if(n == 0) return;
         System.out.print(n + " ");
-        reverseOrder(--n);
+        reverseOrder(n-1);
     }
     public static void main(String[] args) {
         // Please write your code here.
