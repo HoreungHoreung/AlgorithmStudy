@@ -18,7 +18,7 @@ public class Main {
                 sameCnt = 1;
             }
         }
-        return false;
+        return sameCnt >= m;
     }
 
     public static void main(String[] args) {
@@ -48,10 +48,6 @@ public class Main {
             if(isHappy(grid2[j], m)) happys++;
         }
 
-        if(n == 1 && m == 1) {
-            System.out.println(1);
-        } else if(n == 1 && m != 1) {
-            System.out.println(0);
-        } else {System.out.println(happys);}
+        System.out.println(happys);
     }
 }
