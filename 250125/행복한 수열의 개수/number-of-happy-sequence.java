@@ -11,14 +11,14 @@ public class Main {
         for(int i = 1; i < currNums.length; i++){
             if(sameNum == currNums[i]) {
                 sameCnt++;
+                if(sameCnt >= m) return true;
             }
             else{
                 sameNum = currNums[i];
                 sameCnt = 1;
             }
         }
-        if (sameCnt >= m) return true;
-        else return false;
+        return false;
     }
 
     public static void main(String[] args) {
@@ -33,7 +33,8 @@ public class Main {
 
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < n; j++) {
-                grid1[i][j] = grid2[j][i] = sc.nextInt();
+                grid1[i][j] = sc.nextInt();
+                grid2[j][i] = grid1[i][j];
             }
         }
 
@@ -47,6 +48,10 @@ public class Main {
             if(isHappy(grid2[j], m)) happys++;
         }
 
-        System.out.println(happys);
+        if(n == 1 && m == 1) {
+            System.out.println(1);
+        } else if(n == 1 && m != 1) {
+            System.out.println(0);
+        } else {System.out.println(happys);}
     }
 }
