@@ -1,3 +1,5 @@
+
+
 import java.util.*;
 public class Main {
     public static int[][] grid;
@@ -5,7 +7,7 @@ public class Main {
     public static boolean inRange(int x, int y) {
         return 0 <= x && x < n && 0 <= y && y < m;
     }
-    public static int threeHorizon(int row, int col) {
+    public static int threeVertical(int row, int col) {
         int rowS = row;
         int rowE = row + 2;
         int cnt = 0;
@@ -17,12 +19,12 @@ public class Main {
         return cnt;
     }
 
-    public static int threeVertical(int row, int col) {
+    public static int threeHorizon(int row, int col) {
         int colS = col;
         int colE = col + 2;
         int cnt = 0;
         if(inRange(row, colE)) {
-            for(int j = 0; j <= colE; j++) {
+            for(int j = colS; j <= colE; j++) {
                 cnt += grid[row][j];
             }
         } else return 0;
