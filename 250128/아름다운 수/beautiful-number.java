@@ -6,11 +6,10 @@ public class Main {
     private static int cnt = 0;
     
     public static void choose(int currNum) {
-        if(array.size() > n) return;
         if(array.size() == n) {
             cnt++;
             return;
-        }
+        } else if(currNum > n) return;
         
         for(int i = 1; i < n + 1; i++) {
             for(int j = 0; j < i; j++) {
