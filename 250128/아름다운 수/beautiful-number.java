@@ -11,11 +11,11 @@ public class Main {
             return;
         } else if(currNum > n) return;
         
-        for(int i = 1; i < n + 1; i++) {
+        for(int i = 1; i <= n; i++) {
             for(int j = 0; j < i; j++) {
                 array.add(i);
             }
-            choose(currNum + i);
+            choose(currNum + 1);
             for(int j = 0; j < i; j++) {
                 array.remove(array.size() - 1);
             }
