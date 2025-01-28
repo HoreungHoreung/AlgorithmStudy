@@ -1,39 +1,42 @@
 import java.util.*;
 
 public class Main {
-    private static ArrayList<Integer> array = new ArrayList<>();
-    private static int n;
-    private static int cnt = 0;
+    public static int n;
+    public static int ans;
+    public static ArrayList<Integer> seq = new ArrayList<>();
 
-    public static void choose(int remaining) {
-        // 배열 크기가 n에 도달하면 경우의 수를 증가
-        if (remaining == 0) {
-            cnt++;
+    public static boolean isBeautiful() {
+        for(int i = 0; i < n; i += seq.get(i)) {
+            if(i + seq.get(i)  > n) return false; // 범위주의
+
+            for(int j = i ; j < i + seq.get(i); j++) {
+                if(seq.get(i) != seq.get(j)) return false;
+            }
+        }
+        return true;
+    }
+
+    public static void countSeq(int cnt) {
+        if(cnt == n) {
+            if(isBeautiful()){
+                ans++;
+            }
             return;
         }
 
-        // 가능한 숫자를 탐색 (1부터 n까지)
-        for (int i = 1; i <= remaining; i++) {
-            // 숫자 i를 추가
-            for (int j = 0; j < i; j++) {
-                array.add(i);
-            }
-
-            // 백트래킹: 남은 공간에서 i만큼 차감
-            choose(remaining - i);
-
-            // 숫자 i를 제거 (백트래킹)
-            for (int j = 0; j < i; j++) {
-                array.remove(array.size() - 1);
-            }
+        for(int i = 1; i <= 4 ; i++) {
+            seq.add(i);
+            countSeq(cnt + 1);
+            seq.remove(seq.size() - 1);
         }
     }
-
     public static void main(String[] args) {
+        // Please write your code here.
         Scanner sc = new Scanner(System.in);
         n = sc.nextInt();
 
-        choose(n); // 총 n개의 숫자를 채우는 경우 탐색
-        System.out.println(cnt);
+        countSeq(0);
+        System.out.println(ans);
+        
     }
 }
