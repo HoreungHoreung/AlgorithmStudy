@@ -1,5 +1,3 @@
-
-
 import java.util.*;
 import java.io.*;
 
@@ -10,7 +8,7 @@ public class Main {
 
     public static StringBuilder sb = new StringBuilder();
 
-    public static void permutation(int start, int cnt) {
+    public static void permutation(int cnt) {
         if(cnt == M) {
             for(int i = 0; i < M; i++) {
                 sb.append(arr[i] + " ");
@@ -22,7 +20,7 @@ public class Main {
             if(!visited[i]) {
                 arr[cnt] = i;
                 visited[i] = true;
-                permutation(start + 1, cnt + 1);
+                permutation( cnt + 1);
                 visited[i] = false;
             }
         }
@@ -38,7 +36,7 @@ public class Main {
         arr = new int[M];
         visited = new boolean[N + 1];
 
-        permutation(1, 0);
+        permutation( 0);
 
         bw.write(sb.toString());
         br.close();
