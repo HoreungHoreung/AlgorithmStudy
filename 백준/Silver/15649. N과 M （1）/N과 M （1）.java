@@ -1,38 +1,48 @@
+
+
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    private static int N, M;
-    private static boolean[] visited;
-    private static int[] arr;
+    public static int N, M;
+    public static int[] arr;
+    public static boolean[] visited;
 
-    private static void permutation(int cnt) {
+    public static StringBuilder sb = new StringBuilder();
+
+    public static void permutation(int start, int cnt) {
         if(cnt == M) {
             for(int i = 0; i < M; i++) {
-                System.out.print(arr[i] + " ");
+                sb.append(arr[i] + " ");
             }
-            System.out.println();
+            sb.append("\n");
             return;
         }
-
-        for(int i = 1; i <= N;i++) {
-            if(visited[i]) continue;
-            visited[i] = true;
-            arr[cnt] = i;
-            permutation(cnt + 1);
-            visited[i] = false;
+        for(int i = 1; i <= N; i++) {
+            if(!visited[i]) {
+                arr[cnt] = i;
+                visited[i] = true;
+                permutation(start + 1, cnt + 1);
+                visited[i] = false;
+            }
         }
     }
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        M = sc.nextInt();
-        visited = new boolean[N + 1];
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
         arr = new int[M];
+        visited = new boolean[N + 1];
 
-        sc.close();
+        permutation(1, 0);
 
-        permutation(0);
+        bw.write(sb.toString());
+        br.close();
+        bw.flush();
+        bw.close();
     }
-
 }
