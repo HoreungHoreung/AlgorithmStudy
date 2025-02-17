@@ -1,56 +1,37 @@
-
-
 import java.util.*;
 import java.io.*;
 
 public class Main {
+    private static final int MAX_N = 10000;
     private static int N, M;
-    private static boolean[] visited = new boolean[10001];
     private static int[] arr;
+    private static boolean[] visited = new boolean[MAX_N + 1];
     private static int[] nums;
+
     private static StringBuilder sb = new StringBuilder();
-
-    private static void permutation(int cnt) {
-        if(cnt == M) {
-            for(int i = 0; i < M; i++) {
-                sb.append(arr[i] + " ");
-            }
-            sb.append("\n");
-            return;
-        }
-
-        for(int i = 0; i < N; i++) {
-            int currNum = nums[i];
-            if(visited[currNum]) continue;
-            visited[currNum] = true;
-            arr[cnt] = currNum;
-            permutation(cnt + 1);
-            visited[currNum] = false;
-        }
-    }
 
     private static void combination(int start, int cnt) {
         if(cnt == M) {
             for(int i = 0; i < M; i++) {
-                sb.append(arr[i] + " ");
+                sb.append(arr[i]).append(" ");
             }
             sb.append("\n");
             return;
         }
-
-        for(int i = start; i < N; i++) {
+        for(int i = start; i < nums.length; i++) {
             arr[cnt] = nums[i];
             combination(i + 1, cnt + 1);
         }
     }
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
+
         arr = new int[M];
         nums = new int[N];
 
@@ -60,11 +41,10 @@ public class Main {
         }
 
         Arrays.sort(nums);
-//        permutation(0);
         combination(0, 0);
 
-        br.close();
         bw.write(sb.toString());
+        br.close();
         bw.flush();
         bw.close();
     }
