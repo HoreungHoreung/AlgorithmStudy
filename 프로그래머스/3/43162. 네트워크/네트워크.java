@@ -1,24 +1,39 @@
+import java.util.*;
+
 class Solution {
-    public int solution(int n, int[][] computers) {
-        boolean[] visited = new boolean[n];
-        int answer = 0;
+    private static int N;
+    private static boolean[] visited;
+    private static int[][] coms;
+    
+    private static void bfs(int curr) {
+        Deque<Integer> deque = new LinkedList<>();
+        deque.addLast(curr);
+        visited[curr] = true;
         
-        for(int i = 0; i < n; i++) {
+        while(!deque.isEmpty()) {
+            int now = deque.pollLast();
+            
+            for(int i = 0; i < N; i++) {
+                if(!visited[i] && coms[now][i] == 1) {
+                    visited[i] = true;
+                    deque.addLast(i);
+                }
+            }
+        }
+    }
+    public int solution(int n, int[][] computers) {
+        int answer = 0;
+        N = n;
+        coms = computers;
+        visited = new boolean[N];
+        
+        for(int i = 0; i < N; i++) {
             if(!visited[i]) {
                 answer++;
-                dfs(i, computers, visited);
+                bfs(i);
             }
         }
-        return answer;
-    }
-    
-    private void dfs(int node, int[][] computers, boolean visited[]) {
-        visited[node] = true;
         
-        for(int i = 0; i < computers.length; i++) {
-            if(computers[node][i] == 1 && visited[i] == false) {
-                dfs(i, computers, visited);
-            }
-        }
+        return answer;
     }
 }
