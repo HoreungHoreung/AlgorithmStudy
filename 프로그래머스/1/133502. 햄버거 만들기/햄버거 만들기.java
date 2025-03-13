@@ -1,31 +1,21 @@
-import java.util.*;
-
 class Solution {
     public int solution(int[] ingredient) {
         int answer = 0;
-        Deque<Integer> deque = new LinkedList<>();
-        Integer[] target = new Integer[] {1, 2, 3, 1};
-        
+        String target = "1231";
+        StringBuilder sb = new StringBuilder();
         for(int i : ingredient) {
-            deque.addLast(i);
-            if(deque.size() >= 4) {
-                Integer[] temp = new Integer[4];
-                
-                Iterator<Integer> it = deque.descendingIterator();
-                for(int j = 3; j >= 0 && it.hasNext(); j--) {
-                    temp[j] = it.next();
-                }
-                
-                // System.out.println(temp.toString());
-                if(Arrays.equals(target, temp)) {
+            sb.append(i);
+            
+            int size = sb.length();
+            
+            if(size >= 4) {
+                String temp = sb.substring(size - 4, size);
+                if(temp.equals(target)) {
                     answer++;
-                    for(int j = 0; j < 4; j++) {
-                        deque.pollLast();
-                    }
+                    sb.delete(size - 4, size);
                 }
             }
         }
-        
         return answer;
     }
 }
