@@ -1,28 +1,21 @@
-import java.io.*;
 import java.util.*;
-
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+    public static void main(String[] arsg) {
+        Scanner sc = new Scanner(System.in);
+        Deque<Integer> deque = new ArrayDeque<>();
 
-        int N = Integer.parseInt(st.nextToken());
-
-        Queue<Integer> queue = new LinkedList<>();
+        //카드덱 입력 및 생성
+        int N = sc.nextInt();
         for(int i = 1; i <= N; i++) {
-            queue.add(i);
+            deque.addLast(i);
         }
 
-
-        while(queue.size() > 1) {
-            queue.poll();
-            queue.add(queue.poll());
+        //카드 1장이 될 때까지 반복
+        while(deque.size() != 1) {
+            deque.pollFirst();
+            deque.addLast(deque.pollFirst());
         }
-        bw.write(String.valueOf(queue.poll()));
-        br.close();
-        bw.flush();
-        bw.close();
 
-    } 
+        System.out.println(deque.pollFirst());
+    }
 }
