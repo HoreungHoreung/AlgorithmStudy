@@ -5,11 +5,9 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
-        
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(new Comparator<Integer>() {
-           public int compare(Integer a, Integer b) {
-               return b - a;
-        }});
+
+        //기존 Heap은 기본이 최소힙 ->  Comparator를 사용하여 최대힙으로 변환
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
 
         int N = Integer.parseInt(br.readLine());
         for(int i = 0; i < N; i++) {
