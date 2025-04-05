@@ -5,7 +5,6 @@ public class Main {
     static int N, M, V;
     static boolean[] visited;
     static int[][] grid;
-    static int[] result;
     static StringBuilder sb;
 
     private static void dfs(int curr) {
@@ -19,8 +18,9 @@ public class Main {
     }
 
     private static void bfs(int num) {
-        visited = new boolean[N];
-        sb = new StringBuilder();
+        visited = new boolean[N]; //visited 배열 초기화
+        sb = new StringBuilder(); //StringBuilder 초기화
+
         Deque<Integer> deque = new ArrayDeque<>();
         int start = num - 1;
         deque.addLast(start);
@@ -65,6 +65,7 @@ public class Main {
         sb = new StringBuilder();
         dfs(V - 1);
         bw.write(sb.toString());
+        //dfs bfs 결과 분리
         bw.newLine();
         //bfs 호출
         bfs(V);
