@@ -1,75 +1,75 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Main {
     static int N, M, V;
-    static int[][] grid;
     static boolean[] visited;
+    static int[][] grid;
+    static int[] result;
     static StringBuilder sb;
 
-    static void dfs(int V) {
-        visited[V] = true;
-        sb.append((V + 1) + " ");
-
-        for(int adj = 0; adj < N; adj++) {
-            if(!visited[adj] && grid[V][adj] == 1) dfs(adj);
+    private static void dfs(int curr) {
+        visited[curr] = true;
+        sb.append(curr + 1).append(" ");
+        for(int i = 0; i < N; i++) {
+            if(grid[curr][i] == 1 && !visited[i]) {
+                dfs(i);
+            }
         }
     }
 
-    static void bfs(int V) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(V - 1);
-        visited[V - 1] = true;
-        sb.append(V + " ");
+    private static void bfs(int num) {
+        visited = new boolean[N];
+        sb = new StringBuilder();
+        Deque<Integer> deque = new ArrayDeque<>();
+        int start = num - 1;
+        deque.addLast(start);
+        visited[start] = true;
+        sb.append(start + 1 + " ");
 
-        while(!queue.isEmpty()) {
-            int curr = queue.poll();
+        while(!deque.isEmpty()) {
+            int curr = deque.pollFirst();
 
-            for(int adj = 0; adj < N; adj++) {
-                if(grid[curr][adj] == 1 && !visited[adj]) {
-                    visited[adj] = true;
-                    queue.add(adj);
-                    sb.append((adj + 1) + " ");
+            for(int i = 0; i < N; i++) {
+                if(grid[curr][i] == 1 && !visited[i]) {
+                    sb.append(i + 1 + " ");
+                    deque.addLast(i);
+                    visited[i] = true;
                 }
             }
         }
     }
 
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
+        //입력
+        StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         V = Integer.parseInt(st.nextToken());
-
         grid = new int[N][N];
         visited = new boolean[N];
 
         for(int i = 0; i < M; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-
-            grid[a-1][b-1] = 1;
-            grid[b-1][a-1] = 1;
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken()) - 1;
+            int b = Integer.parseInt(st.nextToken()) - 1;
+            grid[a][b] = 1;
+            grid[b][a] = 1;
         }
-
-        sb = new StringBuilder();
-        dfs(V-1);
-        bw.write(sb.toString().trim() + "\n");
-
-        visited = new boolean[N];
-
-        sb = new StringBuilder();
-        bfs(V);
-        bw.write(sb.toString().trim());
-
+        
         br.close();
+        //dfs 호출
+        sb = new StringBuilder();
+        dfs(V - 1);
+        bw.write(sb.toString());
+        bw.newLine();
+        //bfs 호출
+        bfs(V);
+        bw.write(sb.toString());
         bw.flush();
         bw.close();
     }
 }
-
