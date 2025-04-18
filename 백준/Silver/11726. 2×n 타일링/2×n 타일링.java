@@ -8,7 +8,18 @@ public class Main {
 
         int N = Integer.parseInt(br.readLine());
 
-        int[] dp = new int[Math.max(N + 1, 3)];
+        int[] dp = new int[N + 1];
+        
+        //N == 1, 2일때 early return
+        if(N == 1) {
+            System.out.println(1);
+            return;
+        }
+        if(N == 2) {
+            System.out.println(2);
+            return;
+        }
+        
         dp[1] = 1;
         dp[2] = 2;
 
@@ -16,7 +27,8 @@ public class Main {
             dp[i] = (dp[i - 1] + dp[i - 2]) % 10007;
         }
 
-        bw.write(Integer.toString(dp[N]) + "\n");
+        br.close();
+        bw.write(Integer.toString(dp[N]));
         bw.flush();
         bw.close();
     }
