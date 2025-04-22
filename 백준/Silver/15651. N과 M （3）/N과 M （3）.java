@@ -1,57 +1,19 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-    private static int N, M;
-    private static boolean[] visited;
-    private static int[] arr;
     private static StringBuilder sb = new StringBuilder();
-
-    private static void permutation(int cnt) {
+    static void repeatedPermutation(int[] answer, int cnt, int N, int M) {
         if(cnt == M) {
-            for(int i = 0; i < M; i++) {
-                System.out.print(arr[i] + " ");
-            }
-            System.out.println();
-            return;
-        }
-
-        for(int i = 1; i <= N;i++) {
-            if(visited[i]) continue;
-            visited[i] = true;
-            arr[cnt] = i;
-            permutation(cnt + 1);
-            visited[i] = false;
-        }
-    }
-
-    private static void repeatedPermutation(int cnt) {
-        if(cnt == M) {
-            for(int i = 0; i < M; i++) {
-                sb.append(arr[i] + " ");
+            for(int num : answer) {
+                sb.append(num).append(" ");
             }
             sb.append("\n");
             return;
         }
-
         for(int i = 1; i <= N; i++) {
-            arr[cnt] = i;
-            repeatedPermutation(cnt + 1);
-        }
-    }
-
-    private static void combination(int start, int cnt) {
-        if(cnt == M) {
-            for(int i = 0; i < M; i++) {
-                System.out.print(arr[i] + " ");
-            }
-            System.out.println();
-            return;
-        }
-
-        for(int i = start; i <= N; i++) {
-            arr[cnt] = i;
-            combination(i + 1, cnt + 1);
+            answer[cnt] = i;
+            repeatedPermutation(answer, cnt + 1, N, M);
         }
     }
 
@@ -60,19 +22,15 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        visited = new boolean[N + 1];
-        arr = new int[M];
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-//        permutation(0);
-//        combination(1, 0);
-        repeatedPermutation(0);
+        int[] answer = new int[M];
+        repeatedPermutation(answer, 0, N, M);
 
         br.close();
         bw.write(sb.toString());
         bw.flush();
         bw.close();
     }
-
 }
