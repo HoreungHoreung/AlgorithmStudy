@@ -1,24 +1,21 @@
 import java.util.*;
 import java.io.*;
 
-
 public class Main {
-    private static int N, M;
-    private static int[] arr;
-    private static boolean[] visited;
     private static StringBuilder sb = new StringBuilder();
 
-    private static void repeatedCombination(int start, int cnt) {
-        if(cnt == M){
-            for(int i = 0; i < M; i++) {
-                sb.append(arr[i] + " ");
+    private static void repeatedCombination(int[] answer, int cnt, int start, int N, int M) {
+        if(cnt == M) {
+            for(int num : answer) {
+                sb.append(num).append(" ");
             }
             sb.append("\n");
             return;
         }
-        for(int i = start; i <= N; i++) {
-            arr[cnt] = i;
-            repeatedCombination(i, cnt + 1);
+
+        for(int i = start; i <= N ; i++) {
+            answer[cnt] = i;
+            repeatedCombination(answer, cnt + 1, i, N, M);
         }
     }
     public static void main(String[] args) throws IOException{
@@ -26,15 +23,16 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        arr = new int[M];
-        visited = new boolean[N + 1];
 
-        repeatedCombination(1, 0);
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-        bw.write(sb.toString());
+        int[] answer = new int[M];
+
+        repeatedCombination(answer, 0, 1, N , M);
+
         br.close();
+        bw.write(sb.toString());
         bw.flush();
         bw.close();
     }
