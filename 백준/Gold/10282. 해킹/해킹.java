@@ -2,22 +2,23 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    private static class Edge implements Comparable<Edge>{
+
+    private static class Edge{
         int node, time;
         public Edge(int node, int time) {
             this.node = node;
             this.time = time;
         }
-
-        @Override
-        public int compareTo(Edge o) {
-            return this.time - o.time;
-        }
     }
 
     private static String dijkstra(List<List<Edge>> graph, int n, int c) {
         int start = c - 1;
-        PriorityQueue<Edge> minHeap = new PriorityQueue<>(Comparator.comparingInt(e  -> e.time));
+        PriorityQueue<Edge> minHeap = new PriorityQueue<>(new Comparator<Edge>() {
+            @Override
+            public int compare(Edge e1, Edge e2) {
+                return e1.time - e2.time;
+            }
+        });
         boolean[] visited = new boolean[n];
         int[] connected = new int[n];
         Arrays.fill(connected, Integer.MAX_VALUE);
