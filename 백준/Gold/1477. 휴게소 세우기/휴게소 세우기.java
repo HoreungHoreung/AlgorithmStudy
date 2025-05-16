@@ -11,39 +11,35 @@ public class Main {
         int M = Integer.parseInt(st.nextToken()); // 추가로 지을 수 있는 휴게소 수
         int L = Integer.parseInt(st.nextToken()); // 고속도로 길이
 
+        st = new StringTokenizer(br.readLine());
         List<Integer> rests = new ArrayList<>();
-        if (N > 0) {
-            st = new StringTokenizer(br.readLine());
-            for (int i = 0; i < N; i++) {
-                rests.add(Integer.parseInt(st.nextToken()));
-            }
+        for(int i = 0; i < N; i++) {
+            rests.add(Integer.parseInt(st.nextToken()));
         }
         rests.add(0);
         rests.add(L);
         Collections.sort(rests);
 
-        int left = 1;
-        int right = L;
-        int answer = 0;
+        int start = 1;
+        int end = L;
 
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            int count = 0;
-            for (int i = 1; i < rests.size(); i++) {
-                int dist = rests.get(i) - rests.get(i - 1);
-                count += (dist - 1) / mid;
+        //lower bound 문제
+        while(start < end) {
+            int mid = (start + end) / 2;
+            int cnt = 0;
+            for (int i = 1; i < rests.size(); i++) { //
+                int distance = rests.get(i) - rests.get(i - 1);
+                cnt += (distance - 1) / mid;
             }
-            if (count > M) {
-                left = mid + 1;
-            } else {
-                answer = mid;
-                right = mid - 1;
+            if (M < cnt) start = mid + 1;
+            else {
+                end = mid;
             }
         }
 
-        bw.write(String.valueOf(answer));
+        br.close();
+        bw.write(String.valueOf(start));
         bw.flush();
         bw.close();
-        br.close();
     }
 }
