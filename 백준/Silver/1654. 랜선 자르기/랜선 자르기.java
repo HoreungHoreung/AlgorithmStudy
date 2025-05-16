@@ -1,44 +1,48 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
         int K = Integer.parseInt(st.nextToken());
         int N = Integer.parseInt(st.nextToken());
-        int[] nums = new int[K];
 
-        for (int i = 0; i < K; i++) {
-            nums[i] = Integer.parseInt(br.readLine());
+        //lan선 입력
+        long[] lans = new long[K];
+        for(int i = 0; i < K; i++) {
+            lans[i] = Integer.parseInt(br.readLine());
         }
 
-        Arrays.sort(nums);
+        //이분탐색을 위한 정렬
+        Arrays.sort(lans);
 
-        long length = 0;
-        long max_length = nums[K - 1];
-        long min_length = 1;
+        long start = 1;
+        long end = lans[lans.length - 1];
 
-        while (min_length <= max_length) {
-            long mid_length = (max_length + min_length) / 2;
+        while(start <= end) {
+            long mid = (start + end) / 2;
             long cnt = 0;
-
-            for (int num : nums) {
-                cnt += (num / mid_length);
+            for(long lan : lans) {
+                cnt += lan / mid;
             }
-
-            if (cnt >= N) {
-                length = mid_length;
-                min_length = mid_length + 1;
-            } else {
-                max_length = mid_length - 1;
+            //mid <= target 인 경우
+            if(N <= cnt) {
+                start = mid + 1;
+            } else { //target < mid 인 경우
+                end = mid - 1;
             }
         }
-        bw.write(length + "\n");
+
+        /*
+        upperbound -> arr[mid] <= target
+        lowerbound -> arr[mid] < target
+         */
+
         br.close();
+        bw.write(String.valueOf(end));
         bw.flush();
         bw.close();
     }
