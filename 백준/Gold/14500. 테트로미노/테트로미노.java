@@ -42,7 +42,7 @@ public class Main {
         }
     }
 
-    static void FU(int x, int y) {
+    static void F_U(int x, int y) { //ㅗ 모양 따로 처리
         for(int[] dirs : fShape) {
             int sum = grid[x][y];
             boolean valid = true;
@@ -91,7 +91,7 @@ public class Main {
                 dfs(new Point(i, j), 0, grid[i][j]);
                 visited[i][j] = false;
                 //ㅗ모양만 따로 처리
-                FU(i, j);
+                F_U(i, j);
             }
         }
 
