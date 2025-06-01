@@ -30,8 +30,8 @@ public class Main {
 //        System.out.println();
 
         long totalPrice= 0;
-        int distance = distances[0];
-        int minPrice = prices[0];
+        long distance = distances[0];
+        long minPrice = prices[0];
 
         for(int i = 1; i < N - 1; i++) {
             if(minPrice > prices[i]) {
