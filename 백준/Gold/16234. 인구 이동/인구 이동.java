@@ -3,8 +3,9 @@ import java.util.*;
 
 public class Main {
 
-    private static class Country{
+    private static class Country {
         int x, y;
+
         public Country(int x, int y) {
             this.x = x;
             this.y = y;
@@ -15,121 +16,89 @@ public class Main {
     private static int[][] grid;
     private static boolean[][] visited;
 
-    private static int[] dx = {-1, 0, 1, 0};
-    private static int[] dy = {0, 1, 0, -1};
+    private static final int[] dx = {-1, 0, 1, 0};
+    private static final int[] dy = {0, 1, 0, -1};
 
     private static boolean inRange(int x, int y) {
         return 0 <= x && x < N && 0 <= y && y < N;
     }
 
-    private static boolean allSame() {
-        int cnt = grid[0][0];
-        for(int i = 0; i < grid.length; i++) {
-            for(int j = 0; j < grid[0].length; j++) {
-                if(cnt != grid[i][j]) return false;
-            }
-        }
-        return true;
-    }
-
-    private static boolean canMove() {
-        boolean[][] visited = new boolean[N][N];
+    private static boolean bfs(int x, int y) {
         Deque<Country> deque = new ArrayDeque<>();
-        visited[0][0] = true;
-        deque.offerLast(new Country(0, 0));
+        List<Country> union = new ArrayList<>();
 
-        while(!deque.isEmpty()) {
-            Country curr = deque.pollFirst();
-            for(int i = 0; i < 4; i++) {
-                int nx = curr.x + dx[i];
-                int ny = curr.y + dy[i];
-
-                if(inRange(nx, ny)) {
-                    int diff = Math.abs(grid[curr.x][curr.y] - grid[nx][ny]);
-                    if(L <= diff && diff <= R) return true;
-                    if(!visited[nx][ny]) {
-                        deque.offerLast(new Country(nx, ny));
-                        visited[nx][ny] = true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private static void bfs(int x, int y) {
-        Country start = new Country(x, y);
-
-        Deque<Country> deque = new ArrayDeque<>();
-        deque.offerLast(start);
+        deque.offerLast(new Country(x, y));
         visited[x][y] = true;
+        union.add(new Country(x, y));
 
-        Set<Country> set = new HashSet<>();
-        set.add(start);
         int sum = grid[x][y];
-        int cnt = 1;
 
-        while(!deque.isEmpty()) {
+        while (!deque.isEmpty()) {
             Country curr = deque.pollFirst();
             int currP = grid[curr.x][curr.y];
-            for(int i = 0; i < 4; i++) {
+
+            for (int i = 0; i < 4; i++) {
                 int nx = curr.x + dx[i];
                 int ny = curr.y + dy[i];
-                if(inRange(nx, ny)) {
+
+                if (inRange(nx, ny) && !visited[nx][ny]) {
                     int np = grid[nx][ny];
                     int diff = Math.abs(currP - np);
 
-                    if(!visited[nx][ny] && (diff >= L && diff <= R)) {
+                    if (L <= diff && diff <= R) {
                         visited[nx][ny] = true;
                         Country next = new Country(nx, ny);
-                        set.add(next);
                         deque.offerLast(next);
+                        union.add(next);
                         sum += np;
-                        cnt += 1;
                     }
                 }
             }
         }
 
-        int newP = (int)Math.floor((double)sum / cnt);
-        for(Country c : set) {
+        if (union.size() == 1) return false; // 연합이 1개면 이동 없음
+
+        int newP = sum / union.size();
+        for (Country c : union) {
             grid[c.x][c.y] = newP;
         }
+
+        return true;
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = null;
+        StringTokenizer st;
 
         st = new StringTokenizer(br.readLine());
-
         N = Integer.parseInt(st.nextToken());
         L = Integer.parseInt(st.nextToken());
         R = Integer.parseInt(st.nextToken());
 
-        //배열 입력
         grid = new int[N][N];
-        for(int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j = 0; j < N; j++) {
+            for (int j = 0; j < N; j++) {
                 grid[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
         int day = 0;
-        while(canMove()) {
-            visited = new boolean[N][N];
 
-            for(int i = 0; i < N; i++) {
-                for(int j = 0; j < N; j++) {
-                    if(!visited[i][j]) {
-                        bfs(i, j);
+        while (true) {
+            visited = new boolean[N][N];
+            boolean moved = false;
+
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    if (!visited[i][j]) {
+                        if (bfs(i, j)) moved = true;
                     }
                 }
             }
 
-            visited = new boolean[N][N];
+            if (!moved) break;
             day++;
         }
 
