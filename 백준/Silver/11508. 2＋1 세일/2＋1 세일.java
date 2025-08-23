@@ -14,8 +14,15 @@ public class Main {
 
         int totalPay = 0;
         while(diaries.size() > 2) {
-            totalPay += diaries.remove(0);
-            totalPay += diaries.remove(0);
+//            totalPay += diaries.remove(0);
+//            totalPay += diaries.remove(0);
+//            diaries.remove(0);
+
+            totalPay += diaries.get(0);
+            totalPay += diaries.get(1);
+
+            diaries.remove(0);
+            diaries.remove(0);
             diaries.remove(0);
         }
 
