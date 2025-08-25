@@ -1,74 +1,86 @@
+import java.io.*;
 import java.util.*;
 
 public class Main {
-
-    private static int N, M, currDir;
+    private static int cleaned = 0;
+    private static int N, M;
+    private static final int[] dx = {-1, 0, 1, 0};
+    private static final int[] dy = {0, 1, 0, -1};
     private static int[][] grid;
-    private static boolean[][] visited;
-
-    private static int[] dx = new int[] {-1, 0, 1, 0};
-    private static int[] dy = new int[] {0, 1, 0, -1};
 
     private static boolean inRange(int x, int y) {
         return 0 <= x && x < N && 0 <= y && y < M;
     }
 
-    private static int clean(int x, int y) {
-        int cleaned = 0;
+    private static class Point{
+        int x, y, d;
+        public Point(int x, int y, int d) {
+            this.x = x;
+            this.y = y;
+            this.d = d;
+        }
+    }
 
-        while(true) {
-            if(!visited[x][y]) {
-                visited[x][y] = true;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        grid = new int[N][M];
+        boolean[][] visited = new boolean[N][M];
+
+        st = new StringTokenizer(br.readLine());
+        int r = Integer.parseInt(st.nextToken());
+        int c = Integer.parseInt(st.nextToken());
+        int d = Integer.parseInt(st.nextToken());
+
+        for(int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for(int j = 0; j < M; j++) {
+                grid[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        Deque<Point> deque = new ArrayDeque<>();
+        if(grid[r][c] == 1) {
+            System.out.println(cleaned);
+            return;
+        }
+        deque.offerLast(new Point(r, c, d));
+
+        while(!deque.isEmpty()) {
+            Point curr = deque.pollLast();
+
+            if(!visited[curr.x][curr.y]) {
+                visited[curr.x][curr.y] = true;
                 cleaned++;
             }
 
-            boolean moved = false;
-            for(int i = 0; i < 4; i++) {
-                currDir = (currDir + 3) % 4;
-                int newX = x + dx[currDir];
-                int newY = y + dy[currDir];
-
-                if(inRange(newX, newY) && !visited[newX][newY] && grid[newX][newY] == 0) {
-                    x = newX;
-                    y = newY;
-                    moved = true;
+            boolean canClean = false;
+            for(int i = 1; i <= 4; i++) {
+                int nextDir = (curr.d - i + 4) % 4;
+                int nextX = curr.x + dx[nextDir];
+                int nextY = curr.y + dy[nextDir];
+                if(inRange(nextX, nextY) && grid[nextX][nextY] == 0 && !visited[nextX][nextY]) {
+                    canClean = true;
+                    deque.offerLast(new Point(nextX, nextY, nextDir));
                     break;
                 }
             }
 
-            if(!moved) {
-                int backX = x - dx[currDir];
-                int backY = y - dy[currDir];
+            if(!canClean) {
+                int nextDir = (curr.d + 2) % 4;
+                int nextX = curr.x + dx[nextDir], nextY = curr.y + dy[nextDir];
 
-                if(inRange(backX, backY) && grid[backX][backY] == 0) {
-                    x = backX;
-                    y = backY;
+                if (inRange(nextX, nextY) && grid[nextX][nextY] != 1) {
+                    deque.offerLast(new Point(nextX, nextY, curr.d));
                 } else {
-                    return cleaned;
+                    break;
                 }
             }
         }
-    }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        M = sc.nextInt();
-
-        grid = new int[N][M];
-        visited = new boolean[N][M];
-
-        int startX = sc.nextInt();
-        int startY = sc.nextInt();
-        currDir = sc.nextInt();
-
-        for(int row = 0; row < N; row++) {
-            for(int col = 0; col < M; col++) {
-                grid[row][col] = sc.nextInt();
-            }
-        }
-
-        System.out.println(clean(startX, startY));
-        sc.close();
+        System.out.println(cleaned);
     }
 }
