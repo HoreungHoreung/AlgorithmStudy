@@ -1,45 +1,33 @@
 import java.io.*;
 import java.util.*;
-
 public class Main {
-    public static StringBuilder sb;
-    public static int[] answer;
-    private static void permutation(boolean[] visited, int cnt, int start) {
-        if(cnt == answer.length) {
-            for(int i = 0; i < answer.length; i++) {
-                sb.append(answer[i] + " ");
+    private static int N, M;
+    private static boolean[] visited;
+    private static void combination(int depth, int start, int[] result) {
+        if(depth == M) {
+            for(int r : result) {
+                System.out.print(r + " ");
             }
-            sb.append("\n");
+            System.out.println();
             return;
         }
 
-        for(int i = start; i < visited.length; i++) {
-            if(!visited[i]) {
-                visited[i] = true;
-                answer[cnt] = i;
-                permutation(visited, cnt + 1, i + 1);
-                visited[i] = false;
-            }
+        for(int i = start; i <= N; i++) {
+            if(visited[i]) continue;
+            visited[i] = true;
+            result[depth] = i;
+            combination(depth + 1, i + 1, result);
+            visited[i] = false;
         }
-
     }
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        sb = new StringBuilder();
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-
-        answer = new int[M];
-        boolean[] visited = new boolean[N + 1];
-
-        permutation(visited, 0,  1);
-
+        visited = new boolean[N + 1];
+        combination(0, 1, new int[M]);
         br.close();
-        bw.write(sb.toString());
-        bw.flush();
-        bw.close();
     }
 }
