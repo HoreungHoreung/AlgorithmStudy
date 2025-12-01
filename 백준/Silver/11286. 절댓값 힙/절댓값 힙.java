@@ -10,8 +10,11 @@ public class Main {
             this.abs = abs;
         }
     }
+
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
         int N = Integer.parseInt(br.readLine());
 
         PriorityQueue<Node> pq = new PriorityQueue<>(new Comparator<Node>(){
@@ -21,19 +24,24 @@ public class Main {
                 return n1.n - n2.n;
             }
         });
+
+
         for (int i = 0; i < N; i++) {
             int num = Integer.parseInt(br.readLine());
             if (num == 0) {
                 if (pq.isEmpty()) {
-                    System.out.println(0);
+                    sb.append(0).append("\n");
                 } else {
-                    System.out.println(pq.poll().n);
+                    sb.append(pq.poll().n).append("\n");
                 }
             } else {
                 pq.offer(new Node(num, Math.abs(num)));
             }
         }
 
+        bw.write(sb.toString());
+        bw.flush();
+        bw.close();
         br.close();
     }
 }
