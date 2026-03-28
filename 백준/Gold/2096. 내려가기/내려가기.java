@@ -1,45 +1,40 @@
 import java.io.*;
 import java.util.*;
-public class Main {
+
+public class Main{
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
-        int[] maxDp = new int[3];
-        int[] minDp = new int[3];
-
-        for(int i = 0; i < n; i++) {
+        int[][] board = new int[n][3];
+        int[][] maxDp = new int[n][3];
+        int[][] minDp = new int[n][3];
+        
+        for (int i = 0; i < n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int n0 = Integer.parseInt(st.nextToken());
-            int n1 = Integer.parseInt(st.nextToken());
-            int n2 = Integer.parseInt(st.nextToken());
-
-            if(i == 0) {
-                maxDp[0] = minDp[0] = n0;
-                maxDp[1] = minDp[1] = n1;
-                maxDp[2] = minDp[2] = n2;
-            } else {
-                //이전 값
-                int maxAhead0 = maxDp[0], maxAhead1 = maxDp[1], maxAhead2 = maxDp[2];
-                int minAhead0 = minDp[0], minAhead1 = minDp[1], minAhead2 = minDp[2];
-
-                //최댓값
-                maxDp[0] = Math.max(maxAhead0, maxAhead1) + n0;
-                maxDp[1] = Math.max(Math.max(maxAhead0, maxAhead1), maxAhead2) + n1;
-                maxDp[2] = Math.max(maxAhead1, maxAhead2) + n2;
-
-                //최솟값
-                minDp[0] = Math.min(minAhead0, minAhead1) + n0;
-                minDp[1] = Math.min(Math.min(minAhead0, minAhead1), minAhead2) + n1;
-                minDp[2] = Math.min(minAhead1, minAhead2) + n2;
-
-              }
+            board[i][0] = Integer.parseInt(st.nextToken());
+            board[i][1] = Integer.parseInt(st.nextToken());
+            board[i][2] = Integer.parseInt(st.nextToken());
         }
 
-        int max = Math.max(Math.max(maxDp[0], maxDp[1]), maxDp[2]);
-        int min = Math.min(Math.min(minDp[0], minDp[1]), minDp[2]);
+        // 초기값 설정
+        maxDp[0][0] = minDp[0][0] = board[0][0];
+        maxDp[0][1] = minDp[0][1] = board[0][1];
+        maxDp[0][2] = minDp[0][2] = board[0][2];
+        
+        for (int i = 1; i < n; i++) {
+            maxDp[i][0] = Math.max(maxDp[i - 1][0], maxDp[i - 1][1]) + board[i][0];
+            maxDp[i][1] = Math.max(Math.max(maxDp[i - 1][0], maxDp[i - 1][1]), maxDp[i - 1][2]) + board[i][1];
+            maxDp[i][2] = Math.max(maxDp[i - 1][1], maxDp[i - 1][2]) + board[i][2];
+            
+            minDp[i][0] = Math.min(minDp[i - 1][0], minDp[i - 1][1]) + board[i][0];
+            minDp[i][1] = Math.min(Math.min(minDp[i - 1][0], minDp[i - 1][1]), minDp[i - 1][2]) + board[i][1];
+            minDp[i][2] = Math.min(minDp[i - 1][1], minDp[i - 1][2]) + board[i][2];
+        }
 
-        br.close();
+        int max = Math.max(Math.max(maxDp[n - 1][0], maxDp[n - 1][1]), maxDp[n - 1][2]);
+        int min = Math.min(Math.min(minDp[n - 1][0], minDp[n - 1][1]), minDp[n - 1][2]);
+
         System.out.println(max + " " + min);
     }
 }
